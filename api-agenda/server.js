@@ -17,11 +17,29 @@ const db = new Pool({
 const app = express();
 app.use(express.json());
 
+//Retorna todos os contatos
 app.get("/", async (req, res) => {
-    const sql = "SELECT * FROM contatos";
-    const contatos = await db.query(sql);
+    try {
+        const sql = "SELECT * FROM contatos";
+        const contatos = await db.query(sql);
+        res.status(200).send(contatos.rows);
+    } catch (e) {
+        console.log(e);
+        res.status(500).send({ erro: "Um erro ocorreu" });
+    }
+});
 
-    res.status(200).send(contatos.rows);
+//Retorna um contato baseado no id
+app.get("/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+        const sql = "SELECT * FROM contatos WHERE id = " + id;
+        const contatos = await db.query(sql);
+        res.status(200).send(contatos.rows);
+    } catch (e) {
+        console.log(e);
+        res.status(500).send({ erro: "Um erro ocorreu" });
+    }
 });
 
 app.listen(process.env.APP_PORT, () => {
