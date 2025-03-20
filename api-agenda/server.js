@@ -42,6 +42,21 @@ app.get("/:id", async (req, res) => {
     }
 });
 
+app.post("/", async (req, res) => {
+    const { nome, telefone, email, nota, ativo } = req.body;
+    const values = [nome, telefone, email, nota, ativo];
+
+    try {
+        const sql =
+            "INSERT INTO contatos(nome, telefone, email, nota, ativo) VALUES ($1, $2, $3, $4, $5)";
+        const r = await db.query(sql, values);
+        res.status(201).send(r);
+    } catch (e) {
+        console.log(e);
+        res.status(500).send({ erro: "Um erro ocorreu" });
+    }
+});
+
 app.listen(process.env.APP_PORT, () => {
     console.log("Server running at http://localhost:3000/");
 });
