@@ -57,6 +57,20 @@ app.post("/", async (req, res) => {
     }
 });
 
+app.put("/:id", async (req, res) => {
+    const id = req.params.id;
+    const contato_alterar = req.body;
+
+    let sqlTemp = ["UPDATE contatos"];
+    sqlTemp.push("SET");
+    let temp = [];
+
+    const col = Object.keys(contato_alterar);
+    col.forEach((c, i) => {
+        temp.push(c + " = $" + (i + 1));
+    });
+});
+
 app.listen(process.env.APP_PORT, () => {
     console.log("Server running at http://localhost:3000/");
 });
