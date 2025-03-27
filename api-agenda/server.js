@@ -69,6 +69,22 @@ app.put("/:id", async (req, res) => {
     col.forEach((c, i) => {
         temp.push(c + " = $" + (i + 1));
     });
+
+    sqlTemp.push(temp.join(", "));
+    sqlTemp.push("WHERE id = " + id + " RETURNING *");
+    const sql = sqlTemp.join(" ");
+
+    let atributos = col.map((c) => {
+        return contato_alterar[c];
+    });
+
+    try {
+        const r = await db.query(sql, atributos);
+        res.status(200).send(r.rows);
+    } catch (e) {
+        console.log(e);
+        res.status(500).send({ erro: "Um erro ocorreu" });
+    }
 });
 
 app.listen(process.env.APP_PORT, () => {
