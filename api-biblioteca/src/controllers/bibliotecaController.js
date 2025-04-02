@@ -52,7 +52,7 @@ export const listUsers = (req, res) => {
     }
 };
 
-export const updateUsers = (req, res) => {
+export const updateUser = (req, res) => {
     try {
         const { id } = req.params;
         const { nome, cpf, email, senha } = req.body;

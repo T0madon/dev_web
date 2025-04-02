@@ -2,4 +2,4 @@ let users = [];
 let books = [];
 let rentals = [];
 
-export default { users, books, rentals };
+export { users, books, rentals };

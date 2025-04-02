@@ -1,0 +1,19 @@
+Desenvolver uma API Web usando NodeJS para uma biblioteca. A API deve seguir o modelo:
+
+POST '/bib/livro' : cadastrar um livro (id_livro, título, isbn, edição, ano).
+POST '/bib/locar' : cadastrar uma locação (id_user, id_livro, status).
+GET '/bib/livro' : listar livros (formato JSON)
+GET '/bib/livro/:id' : listar um livro dado um id (formato JSON)
+GET '/bib/locar' : listar locações - Listar nome do usuário que locou, nome do livro e status da locação (formato JSON)
+PUT '/bib/user/:id' : alterar um usuário dado um id.
+PUT '/bib/livro/:id' : alterar um livro dado um id.
+DELETE '/bib/user/:id' : remover um usuário dado um id (e todas as locações associadas).
+DELETE '/bib/livro/:id' : remover um livro dado um id (e todas as locações associadas).
+
+
+{
+  "nome": "Gabriel Burack Rosa Krupek",
+  "cpf": "5435345",
+  "email": "burack@email.com",
+  "senha": "sim"
+}
