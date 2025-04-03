@@ -56,6 +56,8 @@ export const updateUser = (req, res) => {
     try {
         const { id } = req.params;
         const { nome, cpf, email, senha } = req.body;
+        console.log(id);
+        console.log(typeof id);
 
         const userIndex = users.findIndex(
             (user) => user.id_user === parseInt(id)
@@ -82,6 +84,25 @@ export const updateUser = (req, res) => {
             senha: senha || users[userIndex].senha,
         };
         res.json(users[userIndex]);
+    } catch (e) {
+        handleServerError(res, e);
+    }
+};
+
+export const deleteUser = (req, res) => {
+    try {
+        const { id } = req.params;
+        console.log(id);
+        const userIndex = users.findIndex((user) => user.id === id);
+
+        if (userIndex === -1) {
+            return res.status(400).json({ error: "Usuário não encontrado" });
+        }
+
+        rentals = rentals.filter((rental) => rental.id_user !== parseInt(id));
+        users.splice(userIndex, 1);
+
+        res.status(204).end();
     } catch (e) {
         handleServerError(res, e);
     }
