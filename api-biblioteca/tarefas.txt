@@ -2,8 +2,6 @@ Desenvolver uma API Web usando NodeJS para uma biblioteca. A API deve seguir o m
 
 POST '/bib/locar' : cadastrar uma locação (id_user, id_livro, status).
 GET '/bib/locar' : listar locações - Listar nome do usuário que locou, nome do livro e status da locação (formato JSON)
-PUT '/bib/livro/:id' : alterar um livro dado um id.
-DELETE '/bib/livro/:id' : remover um livro dado um id (e todas as locações associadas).
 
 
 {
@@ -13,21 +11,31 @@ DELETE '/bib/livro/:id' : remover um livro dado um id (e todas as locações ass
   "senha": "sim"
 }
 
-
-export const deleteUser = (req, res) => {
+export const createBook = (req, res) => {
     try {
-        const { id } = req.params;
-        const userIndex = users.findIndex((user) => user.id === id);
+        const { titulo, isbn, edicao, ano } = req.body;
 
-        if (userIndex === -1) {
-            return res.status(400).json({ error: "Usuário não encontrado" });
+        if (!id_livro || !titulo || !isbn || !edicao || !ano) {
+            return res
+                .status(400)
+                .json({ error: "Todos os campos são obrigatórios" });
         }
 
-        rentals = rentals.filter((rental) => rental.id_user !== parseInt(id));
-        users.splice(userIndex, 1);
+        const existingBook = books.find((book) => book.isbn === isbn);
+        if (existingBook) {
+            return res.status(400).json({ error: "ISBN já cadastrado" });
+        }
 
-        res.status(204).end();
-    } catch (e) {
+        const id_livro =
+            books.length > 0
+                ? Math.max(...books.map((b) => b.id_livro)) + 1
+                : 1;
+
+        const newBook = { id_livro, titulo, isbn, edicao, ano };
+        books.push(newBook);
+
+        res.status(201).json(newBook);
+    } catch (error) {
         handleServerError(res, e);
     }
 };

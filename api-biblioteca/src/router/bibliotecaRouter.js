@@ -1,6 +1,7 @@
 import express from "express";
 import {
     createBook,
+    createRental,
     createUser,
     deleteBook,
     deleteUser,
@@ -25,5 +26,8 @@ router.get("/livro", listBooks);
 router.get("/livro/:id", getBookById);
 router.put("/livro/:id", updateBook);
 router.delete("/livro/:id", deleteBook);
+
+// Rental routers
+router.post("/locar", createRental);
 
 export default router;

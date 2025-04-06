@@ -217,3 +217,48 @@ export const deleteBook = (req, res) => {
         handleServerError(res, e);
     }
 };
+
+// OPERAÇÕES COM RENTALS
+
+export const createRental = (req, res) => {
+    try {
+        const { id_user, id_livro, status } = req.body;
+
+        if (!id_user || !id_livro || !status) {
+            return res
+                .status(400)
+                .json({ error: "Todos os campos são obrigatórios" });
+        }
+
+        const user = findUserById(parseInt(id_user));
+        if (!user) {
+            return res.status(404).json({ error: "Usuário não encontrado" });
+        }
+
+        const book = findBookById(parseInt(id_livro));
+        if (!book) {
+            return res.status(404).json({ error: "Livro não encontrado" });
+        }
+
+        const existingRental = findRenatalByUserAndBook(
+            parseInt(id_user),
+            parseInt(id_livro)
+        );
+        if (existingRental) {
+            return res
+                .status(400)
+                .json({ error: "Locação já existe para este usuário e livro" });
+        }
+
+        const newRental = {
+            id_user: parseInt(id_user),
+            id_livro: parseInt(id_livro),
+            status,
+        };
+        rentals.push(newRental);
+
+        res.status(201).json(newRental);
+    } catch (e) {
+        handleServerError(res, e);
+    }
+};
