@@ -7,6 +7,7 @@ import {
     deleteUser,
     getBookById,
     listBooks,
+    listRentals,
     listUsers,
     updateBook,
     updateUser,
@@ -29,5 +30,6 @@ router.delete("/livro/:id", deleteBook);
 
 // Rental routers
 router.post("/locar", createRental);
+router.get("/locar", listRentals);
 
 export default router;

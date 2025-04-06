@@ -10,32 +10,3 @@ GET '/bib/locar' : listar locações - Listar nome do usuário que locou, nome d
   "email": "burack@email.com",
   "senha": "sim"
 }
-
-export const createBook = (req, res) => {
-    try {
-        const { titulo, isbn, edicao, ano } = req.body;
-
-        if (!id_livro || !titulo || !isbn || !edicao || !ano) {
-            return res
-                .status(400)
-                .json({ error: "Todos os campos são obrigatórios" });
-        }
-
-        const existingBook = books.find((book) => book.isbn === isbn);
-        if (existingBook) {
-            return res.status(400).json({ error: "ISBN já cadastrado" });
-        }
-
-        const id_livro =
-            books.length > 0
-                ? Math.max(...books.map((b) => b.id_livro)) + 1
-                : 1;
-
-        const newBook = { id_livro, titulo, isbn, edicao, ano };
-        books.push(newBook);
-
-        res.status(201).json(newBook);
-    } catch (error) {
-        handleServerError(res, e);
-    }
-};

@@ -262,3 +262,22 @@ export const createRental = (req, res) => {
         handleServerError(res, e);
     }
 };
+
+export const listRentals = (req, res) => {
+    try {
+        const rentalsWithDetails = rentals.map((rental) => {
+            const user = findUserById(rental.id_user);
+            const book = findBookById(rental.id_livro);
+
+            return {
+                nome_usuario: user ? user.nome : "Usuário não encontrado",
+                nome_livro: book ? book.titulo : "Livro não encontrado",
+                status: rental.status,
+            };
+        });
+
+        res.json(rentalsWithDetails);
+    } catch (e) {
+        handleServerError(res, e);
+    }
+};
