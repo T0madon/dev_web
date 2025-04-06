@@ -147,3 +147,53 @@ export const listBooks = (req, res) => {
         handleServerError(res, e);
     }
 };
+
+export const getBookById = (req, res) => {
+    try {
+        const { id } = req.params;
+        const book = findBookById(id);
+
+        if (!book) {
+            return res.status(404).json({ error: "Livro não encontrado" });
+        }
+
+        res.json(book);
+    } catch (e) {
+        handleServerError(res, e);
+    }
+};
+
+export const updateBook = (req, res) => {
+    try {
+        const { id } = req.params;
+        const { titulo, isbn, edicao, ano } = req.body;
+
+        const bookIndex = books.findIndex(
+            (book) => book.id_livro === parseInt(id)
+        );
+        if (bookIndex === -1) {
+            return res.status(404).json({ error: "Livro não encontrado" });
+        }
+
+        const existingBook = books.find((book) => {
+            book.isbn === isbn && book.id_livro !== parseInt(id);
+        });
+        if (existingBook) {
+            res.status(400).json({
+                error: "ISBN já cadastrado em outro livro",
+            });
+        }
+
+        books[bookIndex] = {
+            ...books[bookIndex],
+            titulo: titulo || books[bookIndex].titulo,
+            isbn: isbn || books[bookIndex].isbn,
+            edicao: edicao || books[bookIndex].edicao,
+            ano: ano || books[bookIndex].ano,
+        };
+
+        res.json(books[bookIndex]);
+    } catch (e) {
+        handleServerError(res, e);
+    }
+};

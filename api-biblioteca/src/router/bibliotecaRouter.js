@@ -3,8 +3,10 @@ import {
     createBook,
     createUser,
     deleteUser,
+    getBookById,
     listBooks,
     listUsers,
+    updateBook,
     updateUser,
 } from "../controllers/bibliotecaController.js";
 
@@ -19,5 +21,7 @@ router.delete("/user/:id", deleteUser);
 // Book routers
 router.post("/livro", createBook);
 router.get("/livro", listBooks);
+router.get("/livro/:id", getBookById);
+router.put("/livro/:id", updateBook);
 
 export default router;
