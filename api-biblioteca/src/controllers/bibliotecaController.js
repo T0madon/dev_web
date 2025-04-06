@@ -1,3 +1,4 @@
+import e from "express";
 import { users, books, rentals } from "../db/db.js";
 
 // Funções para obter os itens do BD
@@ -13,6 +14,8 @@ const handleServerError = (res, error) => {
     console.error(error);
     res.status(500).send({ erro: "Um erro ocorreu" });
 };
+
+// OPERAÇÕES USER
 
 export const createUser = (req, res) => {
     try {
@@ -92,7 +95,6 @@ export const updateUser = (req, res) => {
 export const deleteUser = (req, res) => {
     try {
         const { id } = req.params;
-        console.log(id);
         const userIndex = users.findIndex((user) => user.id === id);
 
         if (userIndex === -1) {
@@ -104,6 +106,36 @@ export const deleteUser = (req, res) => {
 
         res.status(204).end();
     } catch (e) {
+        handleServerError(res, e);
+    }
+};
+
+// OPERAÇÕES COM BOOK
+export const createBook = (req, res) => {
+    try {
+        const { titulo, isbn, edicao, ano } = req.body;
+
+        if (!id_livro || !titulo || !isbn || !edicao || !ano) {
+            return res
+                .status(400)
+                .json({ error: "Todos os campos são obrigatórios" });
+        }
+
+        const existingBook = books.find((book) => book.isbn === isbn);
+        if (existingBook) {
+            return res.status(400).json({ error: "ISBN já cadastrado" });
+        }
+
+        const id_livro =
+            books.length > 0
+                ? Math.max(...books.map((b) => b.id_livro)) + 1
+                : 1;
+
+        const newBook = { id_livro, titulo, isbn, edicao, ano };
+        books.push(newBook);
+
+        res.status(201).json(newBook);
+    } catch (error) {
         handleServerError(res, e);
     }
 };
