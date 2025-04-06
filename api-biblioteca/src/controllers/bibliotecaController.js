@@ -139,3 +139,11 @@ export const createBook = (req, res) => {
         handleServerError(res, e);
     }
 };
+
+export const listBooks = (req, res) => {
+    try {
+        res.json(books);
+    } catch (e) {
+        handleServerError(res, e);
+    }
+};
