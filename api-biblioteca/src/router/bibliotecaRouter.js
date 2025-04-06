@@ -2,6 +2,7 @@ import express from "express";
 import {
     createBook,
     createUser,
+    deleteBook,
     deleteUser,
     getBookById,
     listBooks,
@@ -23,5 +24,6 @@ router.post("/livro", createBook);
 router.get("/livro", listBooks);
 router.get("/livro/:id", getBookById);
 router.put("/livro/:id", updateBook);
+router.delete("/livro/:id", deleteBook);
 
 export default router;

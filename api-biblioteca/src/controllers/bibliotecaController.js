@@ -95,7 +95,7 @@ export const updateUser = (req, res) => {
 export const deleteUser = (req, res) => {
     try {
         const { id } = req.params;
-        const userIndex = users.findIndex((user) => user.id === id);
+        const userIndex = users.findIndex((user) => user.id === parseInt(id));
 
         if (userIndex === -1) {
             return res.status(400).json({ error: "Usuário não encontrado" });
@@ -193,6 +193,26 @@ export const updateBook = (req, res) => {
         };
 
         res.json(books[bookIndex]);
+    } catch (e) {
+        handleServerError(res, e);
+    }
+};
+
+export const deleteBook = (req, res) => {
+    try {
+        const { id } = req.params;
+        const bookIndex = books.findIndex(
+            (book) => book.id_livro === parseInt(id)
+        );
+
+        if (bookIndex === -1) {
+            return res.status(400).json({ error: "Livro não encontrado" });
+        }
+
+        rentals = rentals.filter((rental) => rental.id_livro !== parseInt(id));
+        books.splice(bookIndex, 1);
+
+        res.status(204).end();
     } catch (e) {
         handleServerError(res, e);
     }

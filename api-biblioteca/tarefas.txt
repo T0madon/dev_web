@@ -12,3 +12,22 @@ DELETE '/bib/livro/:id' : remover um livro dado um id (e todas as locações ass
   "email": "burack@email.com",
   "senha": "sim"
 }
+
+
+export const deleteUser = (req, res) => {
+    try {
+        const { id } = req.params;
+        const userIndex = users.findIndex((user) => user.id === id);
+
+        if (userIndex === -1) {
+            return res.status(400).json({ error: "Usuário não encontrado" });
+        }
+
+        rentals = rentals.filter((rental) => rental.id_user !== parseInt(id));
+        users.splice(userIndex, 1);
+
+        res.status(204).end();
+    } catch (e) {
+        handleServerError(res, e);
+    }
+};
